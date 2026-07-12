@@ -28,11 +28,19 @@ initSqlJs().then((SQL) => {
 
     app.get("/users", (req, res) => {
         const result = db.exec("SELECT * FROM users");
-        res.json(result);
+
+        const users = result[0].values.map(row => ({
+            id: row[0],
+            name: row[1],
+            age: row[2]
+        }));
+
+        res.json(users);
     });
 
-    app.listen(3000, () => {
-        console.log("Server running on port 3000");
+    const PORT = process.env.PORT || 3000;
+
+    app.listen(PORT, () => {
+        console.log(`Server running on port ${PORT}`);
     });
 });
-
